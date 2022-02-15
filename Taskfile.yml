@@ -1,0 +1,14 @@
+version: '3'
+
+dotenv: []
+
+tasks:
+  run:
+    cmds:
+      - docker-compose build
+      - docker-compose up
+
+  stop:
+    cmds:
+      - docker-compose stop
+      - docker system prune

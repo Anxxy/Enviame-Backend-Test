@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
+
 def filter_dict(dict, fields):
 
     # Filtra el diccionario entrante, retornando nuevo diccionario
@@ -23,14 +24,14 @@ def filter_dict(dict, fields):
 
     return filtered_dict
 
+
 def format_date(datetime):
 
     # Retorna una representación en String de una fecha/hora dada.
 
     return datetime.strftime(DATE_FORMAT)
 
-def get_current_datetime():
 
+def get_current_datetime():
     # Retorna la fecha actual en UTC-0
-    
     return datetime.now(timezone.utc)
