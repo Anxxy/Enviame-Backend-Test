@@ -1,4 +1,7 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
+import random
+import string
+import jwt
 
 # Funciones de utilidad para el sistema completo.
 
@@ -35,3 +38,22 @@ def format_date(datetime):
 def get_current_datetime():
     # Retorna la fecha actual en UTC-0
     return datetime.now(timezone.utc)
+
+
+def get_access_token(secret, user_id, email, user_type):
+    dt = datetime.now() + timedelta(minutes=15)
+    token = jwt.encode({
+        "user_id": user_id,
+        "email": email,
+        "type": user_type.name,
+        "exp": dt
+    }, secret, algorithm='HS256')
+    return token
+
+
+def get_refresh_token():
+    return ''.join(random.choice(string.ascii_letters) for i in range(10))
+
+
+def decode_access_token(secret, token):
+    return jwt.decode(token, secret, algorithms=['HS256'])

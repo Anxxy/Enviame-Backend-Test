@@ -1,5 +1,4 @@
-from sqlalchemy import Table, Column, Integer, String, Enum
-from sqlalchemy.orm import relationship
+from sqlalchemy import Table, Column, Integer, String, Enum, ForeignKey
 from sqlalchemy import TIMESTAMP
 from src.models.order.entities.enums.order_status import OrderStatus
 
@@ -19,8 +18,8 @@ class SQLAlchemyOrdersRepository(SQLAlchemyRepository):
             table_name,
             client.mapper_registry.metadata,
             Column("id", Integer, primary_key=True),
-            Column("buyer", Integer),
-            Column("seller", Integer),
+            Column("buyer", Integer, ForeignKey("Users.id")),
+            Column("seller", Integer, ForeignKey("Sellers.id")),
             Column("quantity", String(50)),
             Column("status", Enum(OrderStatus)),
 

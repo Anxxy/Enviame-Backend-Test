@@ -11,6 +11,10 @@ CREATION_VALIDATABLE_FIELDS = {
         "required": True,
         "type": "integer",
     },
+    # "seller": {
+    #     "required": True,
+    #     "type": "integer",
+    # }
 }
 
 UPDATE_VALIDATABLE_FIELDS = {
@@ -26,4 +30,8 @@ UPDATE_VALIDATABLE_FIELDS = {
         "required": False,
         "type": "integer",
     },
+    # "seller": {
+    #     "required": False,
+    #     "type": "integer",
+    # }
 }

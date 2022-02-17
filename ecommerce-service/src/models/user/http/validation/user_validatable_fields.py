@@ -51,3 +51,14 @@ UPDATE_VALIDATABLE_FIELDS = {
         "type": "string"
     }
 }
+
+SIGN_IN_VALIDATABLE_FIELDS = {
+    "email": {
+        "required": True,
+        "type": "string",
+    },
+    "password": {
+        "required": True,
+        "type": "string",
+    },
+}

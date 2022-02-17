@@ -8,6 +8,7 @@ class Product():
         name,
         description,
         quantity,
+        seller,
         created_at=None,
         updated_at=None,
         deleted_at=None
@@ -16,6 +17,7 @@ class Product():
         self.name = name
         self.description = description
         self.quantity = quantity
+        self.seller = seller
 
         self.created_at = created_at
         self.updated_at = updated_at
@@ -27,6 +29,7 @@ class Product():
             "name": self.name,
             "description": self.description,
             "quantity": self.quantity,
+            "seller": self.seller,
 
             "created_at": self.created_at,
             "updated_at": self.updated_at,
@@ -46,6 +49,7 @@ class Product():
         name = dict.get("name")
         description = dict.get("description")
         quantity = dict.get("quantity")
+        seller = dict.get("seller")
 
         created_at = dict.get("created_at")
         updated_at = dict.get("updated_at")
@@ -56,6 +60,7 @@ class Product():
             name,
             description,
             quantity,
+            seller,
             created_at,
             updated_at,
             deleted_at

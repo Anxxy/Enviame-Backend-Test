@@ -19,10 +19,19 @@ class SQLAlchemySellersRepository(SQLAlchemyRepository):
             Column("id", Integer, primary_key=True),
             Column("name", String(50)),
             Column("description", String(100)),
-            Column("user", Integer),
+            Column("address", String(100)),
+            Column("user", Integer, ForeignKey('Users.id')),
             Column("created_at", TIMESTAMP),
             Column("updated_at", TIMESTAMP),
             Column("deleted_at", TIMESTAMP, nullable=True),
         )
-        
+
         super().__init__(sqlalchemy_client, Seller, table, test)
+
+    def find_by_user(self, user_id):
+        with self.session_factory() as session:
+            results = session.query(self.entity_type).filter_by(
+                user=user_id,
+                deleted_at=None
+            ).first()
+            return results

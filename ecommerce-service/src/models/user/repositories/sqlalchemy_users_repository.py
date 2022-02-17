@@ -32,3 +32,11 @@ class SQLAlchemyUsersRepository(SQLAlchemyRepository):
         )
 
         super().__init__(client, User, table, test)
+
+    def find_by_email(self, email):
+        with self.session_factory() as session:
+            results = session.query(self.entity_type).filter_by(
+                email=email,
+                deleted_at=None
+            ).first()
+            return results

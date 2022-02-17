@@ -4,12 +4,21 @@ from enviame.inputvalidation import SUCCESS_CODE, FAIL_CODE
 from sqlalchemy.exc import IntegrityError
 
 
-def create_crud_blueprint(usecase, title, validatable_fields, blueprint=None):
+def create_crud_blueprint(usecase, title, validatable_fields, blueprint=None, filters=[]):
     if blueprint is None:
         blueprint = Blueprint(title, __name__)
 
     @blueprint.route(f"/{title}", methods=["GET"])
     def find_all():
+        valid = True
+        for f in filters:
+            valid = valid and f("read")
+        if not valid:
+            return {
+                "code": FAIL_CODE,
+                "message": "You dont have permissions to perform this action"
+            }, 400
+
         entities = usecase.find_all()
 
         entities_dict = []
@@ -31,6 +40,15 @@ def create_crud_blueprint(usecase, title, validatable_fields, blueprint=None):
 
     @blueprint.route(f"/{title}/<string:id>", methods=["GET"])
     def find_by_id(id):
+        valid = True
+        for f in filters:
+            valid = valid and f("read")
+        if not valid:
+            return {
+                "code": FAIL_CODE,
+                "message": "You dont have permissions to perform this action"
+            }, 400
+
         entity = usecase.find_by_id(id)
 
         if entity:
@@ -58,6 +76,15 @@ def create_crud_blueprint(usecase, title, validatable_fields, blueprint=None):
     @blueprint.route(f"/{title}", methods=["POST"])
     @validate_schema_flask(validatable_fields.CREATION_VALIDATABLE_FIELDS)
     def create():
+        valid = True
+        for f in filters:
+            valid = valid and f("create")
+        if not valid:
+            return {
+                "code": FAIL_CODE,
+                "message": "You dont have permissions to perform this action"
+            }, 400
+
         body = request.get_json()
 
         try:
@@ -93,6 +120,15 @@ def create_crud_blueprint(usecase, title, validatable_fields, blueprint=None):
     @blueprint.route(f"/{title}/<string:id>", methods=["PUT"])
     @validate_schema_flask(validatable_fields.UPDATE_VALIDATABLE_FIELDS)
     def update(id):
+        valid = True
+        for f in filters:
+            valid = valid and f("update")
+        if not valid:
+            return {
+                "code": FAIL_CODE,
+                "message": "You dont have permissions to perform this action"
+            }, 400
+
         body = request.get_json()
         entity = usecase.repository.entity_type.from_dict(body)
 
@@ -127,6 +163,15 @@ def create_crud_blueprint(usecase, title, validatable_fields, blueprint=None):
 
     @blueprint.route(f"/{title}/<string:id>", methods=["DELETE"])
     def delete(id):
+        valid = True
+        for f in filters:
+            valid = valid and f("delete")
+        if not valid:
+            return {
+                "code": FAIL_CODE,
+                "message": "You dont have permissions to perform this action"
+            }, 400
+
         try:
             usecase.delete(id)
             code = SUCCESS_CODE
